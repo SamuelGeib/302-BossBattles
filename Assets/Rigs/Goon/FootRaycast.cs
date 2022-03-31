@@ -1,33 +1,56 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FootRaycast : MonoBehaviour
 {
+    /// <summary> Length in Meters </summary>
     public float raycastLength = 2;
-
-    public float distanceBetweenGroundAndIK = 0;
-
-    private Quaternion startingRot;
-
- 
-    /// <summary> The world-space position  of the ground above/below the foot IK. </summary>
+    /// <summary> Local-Space position of where the IK spawned </summary>
+    private Vector3 startingPosition;
+    /// <summary> Local-Space Rotation of where the IK spawned </summary>
+    private Quaternion startingRotation;
+    /// <summary>   The world-space position  of the ground above/below the foot IK. </summary>
     private Vector3 groundPosition;
-    /// <summary>  The world-space rotation for the foot to be aligned to </summary>
+    /// <summary> The world-space rotation for the foot to be aligned to </summary>
     private Quaternion groundRotation;
+    /// <summary>
+    /// Local-Space position to ease towards.
+    /// </summary>
+    private Vector3 targetPosition;
+
+    private Vector3 footSeparateDir;
 
     void Start()
     {
-        startingRot = transform.localRotation;
-        distanceBetweenGroundAndIK = transform.localPosition.y;
+        // Set starting position and rotation
+        startingRotation = transform.localRotation;
+        startingPosition = transform.localPosition;
+
+        footSeparateDir = (startingPosition.x > 0) ? Vector3.right : Vector3.left;
     }
 
     void Update()
     {
-        //FindGround();
+        // Ease Twards Target Position
+        transform.localPosition = AnimMath.Ease(transform.localPosition, targetPosition, .01f);
     }
 
-    private void FindGround()
+    /// <summary>
+    /// Wapper function?
+    /// </summary>
+    /// <param name="p"> This is the position of the foot?</param>
+    public void SetPositionLocal (Vector3 p) {
+        targetPosition = p;
+    }
+
+    public void SetPositionHome(){
+        targetPosition = startingPosition;
+    }
+
+    public void SetPositionOffset(Vector3 p, float separateAmount = 0) {
+        targetPosition = startingPosition + p + separateAmount * footSeparateDir;
+    }
+
+    private void FindGround() // Why isn't this being called?
     {
         Vector3 origin = transform.position + Vector3.up * raycastLength / 2;
         Vector3 direction = Vector3.down;
@@ -41,10 +64,10 @@ public class FootRaycast : MonoBehaviour
         {
 
             // Find ground position
-            groundPosition = hitInfo.point + Vector3.up * distanceBetweenGroundAndIK;
+            groundPosition = hitInfo.point + Vector3.up * startingPosition.y;
 
             // Convert starting rotation into world-space
-            Quaternion worldNeutral = transform.parent.rotation * startingRot;
+            Quaternion worldNeutral = transform.parent.rotation * startingRotation;
 
             groundRotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal) * worldNeutral;
         }

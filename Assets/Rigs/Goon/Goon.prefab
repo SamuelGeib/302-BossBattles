@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d2953dd5c8258418acd213bf2a2d50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceBetweenGroundAndIK: 0
+  raycastLength: 0.6
 --- !u!1 &498705072
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d2953dd5c8258418acd213bf2a2d50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceBetweenGroundAndIK: 0.177
+  raycastLength: 0.6
 --- !u!1 &1335417735
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,7 +977,7 @@ MonoBehaviour:
       x: 1
       y: 1
       z: 1
-    m_MaintainOffset: 0
+    m_MaintainOffset: 1
 --- !u!1 &1542069865770429896
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,7 +1594,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 459cd9dcf3a37764593a136e6bc12973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footLeft: {fileID: 6484818234275941641}
+  footRight: {fileID: 1384634809}
   speed: 2
+  footSeparateAmount: -0.2
+  walkSpreadY: 0.4
+  walkSpreadZ: 0.4
+  walkFootSpeed: 4
+  velocityY: 0
+  gravity: 50
+  jumpImpulse: 15
 --- !u!1 &3457947085060133870
 GameObject:
   m_ObjectHideFlags: 0
